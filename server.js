@@ -41,9 +41,6 @@ app.use('/file', require('./router/router.file'))
 
 
 
-app.post('/test',(req, res)=>{
-    res.json({
-        get: req.query.id,
-        post: req.body.id
-    })
+app.get('/test',(req, res)=>{
+    res.send('hung ngu vl')
 })

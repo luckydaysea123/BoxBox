@@ -6,35 +6,31 @@ var jsonReturn = (res, status, message, user) => {
         "__": user
     })
 }
-module.exports.verifyTokenAdmin = (req, res, next) => {
+var parseToken = (req, res) => {
     var bearerHeader = req.headers.authorization;
-    console.log(bearerHeader)
     if (typeof bearerHeader === 'undefined')
         return jsonReturn(res, false, "Token undefined")
     var bearer = bearerHeader.split(' ')
     var bearerToken = bearer[1]
     req.token = bearerToken
-    jwt.verify(bearerToken, 'votong123', (err, autData) => {
+}
+module.exports.parseToken = parseToken
+module.exports.verifyTokenAdmin = (req, res, next) => {
+    parseToken(req, res)
+    jwt.verify(req.token, 'votong123', (err, autData) => {
         if (err)
             return jsonReturn(res, false, "Token invalid")
         if (autData.infor.admin !== true)
             jsonReturn(res, false, "Do not have permission")
-        //jsonReturn(res, true, "Auth token success", autData)
+        console.log(autData);
         next()
     })
 }
 module.exports.verifyTokenUser = (req, res, next) => {
-    var bearerHeader = req.headers.authorization;
-    console.log(bearerHeader)
-    if (typeof bearerHeader === 'undefined')
-        return jsonReturn(res, false, "Token undefined")
-    var bearer = bearerHeader.split(' ')
-    var bearerToken = bearer[1]
-    req.token = bearerToken
-    jwt.verify(bearerToken, 'votong123', (err, autData) => {
+    parseToken(req, res)
+    jwt.verify(req.token, 'votong123', (err, autData) => {
         if (err)
-            return jsonReturn(res, false, "Token invalid")
-       // jsonReturn(res, true, "Auth token success", autData)
+            return jsonReturn(res, false, "Token invalid")   
         next()
     })
 }

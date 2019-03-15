@@ -23,7 +23,7 @@ module.exports.login = (req, res) => {
                     username: doc.username,
                     admin: doc.admin
                 }
-                jwt.sign({ infor }, 'votong123', { expiresIn: '3000s' }, function (err, token) {
+                jwt.sign({ infor }, 'votong123', { expiresIn: '1d' }, function (err, token) {
                     jsonReturn(res, true, "login success", { token: token })
                 });
             })
