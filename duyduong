@@ -1,0 +1,64 @@
+//const useraccountFormmat = require('./dataformat.useraccount')
+const userModel = require('../models/model.user')
+
+function userInforByID(UserID) {
+    return new Promise(function (resolve, reject) {
+        userModel.findById(UserID)
+            .then(user => {
+                var userView = {
+                    UserID: user._id,
+                    UserName: user.UserName,
+                    CreatedDate: user.CreatedDate,
+                    FirstName: user.FirstName,
+                    LastName: user.LastName,
+                    Email: user.Email,
+                    Job: user.Job,
+                    Gender: user.Gender,
+                    UserLevel: user.UserLevel,
+                    PhoneNumber: user.PhoneNumber,
+                    UserImage: user.UserImage,
+                    BirthDay: user.BirthDay,
+                    UserStatus: user.UserStatus,
+                    OwerAccount: user.OwerAccount ? data.OwerAccount : 0
+                }
+                resolve(userView)
+            })
+            .catch()
+    })
+}
+function listUserInfor(account) {
+    return new Promise(function (resolve, reject) {
+        var listUser = []
+        account.AccountUserList.map(userInAccount => {
+            userInforByID(userInAccount.UserID)
+                .then(userView => {
+                    listUser.push(userView)
+                })
+        })
+        resolve(listUser)
+    });
+}
+
+module.exports.account = (account) => {
+    return {
+        AccountID: account._id,
+        AccountName: account.AccountName,
+        AccountAmount: account.AccountAmount,
+        AccountDate: account.AccountDate,
+        AccountIcon: account.AccountIcon,
+        AccountRecordList: account.AccountRecordList,
+        AccountUserList: account.AccountUserList}
+    // listUserInfor(account)
+    //     .then(listUser => {
+    //         return {
+    //             AccountID: account._id,
+    //             AccountName: account.AccountName,
+    //             AccountAmount: account.AccountAmount,
+    //             AccountDate: account.AccountDate,
+    //             AccountIcon: account.AccountIcon,
+    //             AccountRecordList: account.AccountRecordList,
+    //             AccountUserList: account.AccountUserList
+    //         }
+    //     })
+}
+
